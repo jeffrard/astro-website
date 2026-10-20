@@ -65,7 +65,6 @@ header .wrap { display: flex; align-items: center; justify-content: space-betwee
 .logo-img { display: block; height: 80px; width: auto; }
 @media (max-width: 680px) { .logo-img { height: 60px; } }
 .logo { font-family: var(--display); font-size: 22px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-.logo-mark { width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(#1A1A1A 0 25%, #A9D6E5 0 50%, #B3312C 0 75%, #C9CDD1 0); box-shadow: 0 0 0 1.5px var(--line); }
 nav { display: flex; align-items: center; gap: 28px; }
 nav a.link { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--muted); }
 nav a.link:hover { color: var(--ink); }
@@ -172,7 +171,9 @@ form .btn { justify-self: start; }
 
 footer { padding-block: 40px 48px; color: var(--muted); font-size: 14px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
-footer .logo { color: var(--ink); font-size: 18px; }
+footer .logo { gap: 14px; }
+.footer-mascot { display: block; width: 52px; height: 52px; }
+.footer-word { display: block; height: 56px; width: auto; }
 </style>
 </head>
 <body>
@@ -314,7 +315,7 @@ footer .logo { color: var(--ink); font-size: 18px; }
 
 <footer>
   <div class="wrap">
-    <span class="logo"><span class="logo-mark" aria-hidden="true"></span>Astro Painting Co.</span>
+    <a class="logo" href="#top"><img class="footer-mascot" src="images/mascot.png" width="512" height="512" alt=""><picture><source srcset="images/astro-logo-dark.png" media="(prefers-color-scheme: dark)"><img class="footer-word" src="images/astro-logo.png" width="491" height="300" alt="Astro Painting Co. — back to top"></picture></a>
     <span><a href="mailto:hello@astropainting.co">hello@astropainting.co</a> · © 2026 Astro Painting Co.</span>
   </div>
 </footer>
