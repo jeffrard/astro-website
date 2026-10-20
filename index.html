@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Astro Painting Co. — interior painting, exterior painting, and cabinet refinishing. Book a free on-site assessment.">
 <title>Astro Painting Co.</title>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="images/mascot.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -58,7 +61,9 @@ a { color: inherit; }
 
 /* Header */
 header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.logo-img { display: block; height: 80px; width: auto; }
+@media (max-width: 680px) { .logo-img { height: 60px; } }
 .logo { font-family: var(--display); font-size: 22px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
 .logo-mark { width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(#1A1A1A 0 25%, #A9D6E5 0 50%, #B3312C 0 75%, #C9CDD1 0); box-shadow: 0 0 0 1.5px var(--line); }
 nav { display: flex; align-items: center; gap: 28px; }
@@ -173,7 +178,7 @@ footer .logo { color: var(--ink); font-size: 18px; }
 <body>
 <header>
   <div class="wrap">
-    <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"></span>Astro Painting Co.</a>
+    <a class="logo" href="#top"><picture><source srcset="images/astro-logo-dark.png" media="(prefers-color-scheme: dark)"><img class="logo-img" src="images/astro-logo.png" width="491" height="300" alt="Astro Painting Co."></picture></a>
     <nav aria-label="Main">
       <a class="link" href="#services">Services</a>
       <a class="link" href="#about">About</a>
