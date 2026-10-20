@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/css/site.css">
+<script src="/js/nav.js" defer></script>
 <script type="application/ld+json">
 [
   {
@@ -116,12 +117,24 @@
   <div class="wrap">
     <a class="logo" href="/"><picture><source srcset="/images/astro-logo-dark.png" media="(prefers-color-scheme: dark)"><img class="logo-img" src="/images/astro-logo.png" width="491" height="300" alt="Astro Painting Co. home"></picture></a>
     <nav aria-label="Main">
-      <a class="link" href="/#services">Services</a>
+      <div class="dd">
+        <button class="dd-btn" type="button" aria-expanded="false" aria-controls="svc-menu">Services <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <ul class="dd-menu" id="svc-menu" hidden><li><a href="/interior-painting/">Interior Painting</a></li><li><a href="/exterior-painting/">Exterior Painting</a></li><li><a href="/cabinet-refinishing/" aria-current="page">Cabinet Refinishing</a></li><li class="dd-all"><a href="/#services">All services</a></li></ul>
+      </div>
       <a class="link" href="/#about">About</a>
       <a class="link" href="/#areas">Areas</a>
       <a class="link" href="/#contact">Contact</a>
       <a class="phone" href="tel:+16513417483">(651) 341-7483</a>
       <a class="btn btn-primary" href="/#book">Book now</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><svg class="i-open" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i-close" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </nav>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="wrap" aria-label="Mobile">
+      <div class="eyebrow">Services</div>
+      <ul><li><a href="/interior-painting/">Interior Painting</a></li><li><a href="/exterior-painting/">Exterior Painting</a></li><li><a href="/cabinet-refinishing/" aria-current="page">Cabinet Refinishing</a></li><li><a href="/#services">All services</a></li></ul>
+      <ul class="mm-main"><li><a href="/#about">About</a></li><li><a href="/#areas">Areas</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#contact">Contact</a></li></ul>
+      <div class="mm-actions"><a class="btn btn-ghost" href="tel:+16513417483">Call (651) 341-7483</a><a class="btn btn-primary" href="/#book">Book a free assessment</a></div>
     </nav>
   </div>
 </header>
