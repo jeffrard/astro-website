@@ -1,12 +1,13 @@
 # Astro Painting Co. — website
 
-Marketing site for Astro Painting Co. LLC, a residential painting company based in western Wisconsin (River Falls / Hammond area). Static HTML/CSS/JS, no build step.
+Marketing site for Astro Painting Co. LLC, a residential painting company serving the Twin Cities East Metro and St. Croix Valley (based in the River Falls / Hammond area). Static HTML/CSS/JS, no build step.
 
 ## Structure
 - `index.html` — home page (hero, services, about, service areas, FAQ, quote form)
 - `interior-painting/`, `exterior-painting/` — one `index.html` per service page
 - `css/site.css` — shared styles and color/font tokens (defined on `:root`, with dark-mode overrides)
 - `js/nav.js` — header Services dropdown and mobile menu
+- `js/gallery.js` — photo slider on the home page Interior Painting card (photos in `images/interior/`, 16:10 crops at 600 and 1200px wide)
 - `images/` — logo, dark logo, mascot, favicons, OG image
 - `404.html`, `robots.txt`, `sitemap.xml` — add any new page to `sitemap.xml`
 - `_redirects` — Netlify redirects (old `/cabinet-refinishing/` URLs go to the home page)
@@ -30,7 +31,10 @@ Marketing site for Astro Painting Co. LLC, a residential painting company based 
 - Instagram: @astropaintingco
 - Services: interior painting and exterior painting only (no cabinet refinishing)
 - Offer: free on-site assessment with written estimate
-- Service area: Wisconsin towns only for now (no Minnesota cities): River Falls, Hammond, Hudson, Roberts, Baldwin, New Richmond, Somerset, Prescott, Ellsworth, Spring Valley, Woodville, Glenwood City
+- Service area, always called "Twin Cities East Metro and St. Croix Valley" (not "western Wisconsin"):
+  - Wisconsin: River Falls, Hammond, Hudson, Roberts, Baldwin, New Richmond, Somerset, Prescott, Ellsworth, Spring Valley, Woodville, Glenwood City
+  - Minnesota: Woodbury, Stillwater, Lake Elmo, Oakdale, Cottage Grove, Afton, Hastings, Bayport, Oak Park Heights, Mahtomedi
+  - The town list appears in the home page Areas section and FAQ, each service page's town pills, and every page's `areaServed` JSON-LD; keep them all in sync.
 - Keep the `HousePainter` JSON-LD in `index.html` in sync with any change to these details.
 
 ## Quote form
