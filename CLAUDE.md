@@ -10,6 +10,7 @@ Marketing site for Astro Painting Co. LLC, a residential painting company based 
 - `images/` — logo, dark logo, mascot, favicons, OG image
 - `404.html`, `robots.txt`, `sitemap.xml` — add any new page to `sitemap.xml`
 - `_redirects` — Netlify redirects (old `/cabinet-refinishing/` URLs go to the home page)
+- `netlify/functions/submission-created.mjs` — sends each quote request to Go High Level (see Quote form)
 
 ## Hosting and publishing
 - Hosted on Netlify; canonical URL is https://www.astropainting.co/
@@ -36,6 +37,8 @@ Marketing site for Astro Painting Co. LLC, a residential painting company based 
 - Netlify Forms: `data-netlify="true"`, form name `quote`. Submissions appear under Forms in Netlify.
 - Keep the hidden `form-name` input and the `company` honeypot field when editing.
 - Submitted via `fetch` in an inline script on `index.html`.
+- Every verified submission also goes to Go High Level (the CRM) via `netlify/functions/submission-created.mjs`, which upserts a contact (tags: `website lead` + the service) and adds the project details as a note. It uses GHL's API directly, not a GHL premium trigger, so there's no per-lead charge.
+- That function needs Netlify environment variables `GHL_API_TOKEN` (a GHL Private Integration token with contact scopes) and `GHL_LOCATION_ID`. Never commit the token. If you rename or add form fields, update the function too.
 
 ## Working with Jared
 - Answer "can you / is it possible" questions without acting on them; wait to be asked before making changes.
