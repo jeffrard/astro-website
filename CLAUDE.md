@@ -7,7 +7,7 @@ Marketing site for Astro Painting Co. LLC, a residential painting company servin
 - `interior-painting/`, `exterior-painting/` — one `index.html` per service page
 - `css/site.css` — shared styles and color/font tokens (defined on `:root`, with dark-mode overrides)
 - `js/nav.js` — header Services dropdown and mobile menu
-- `js/gallery.js` — photo slider on the home page Interior Painting card (photos in `images/interior/` as WebP, 16:10 crops at 600 and 1200px wide; make new crops from the original photos, not by re-encoding existing files)
+- `js/gallery.js` — photo sliders on the home page Interior and Exterior Painting cards (photos in `images/interior/` and `images/exterior/` as WebP, 16:10 crops at 600 and 1200px wide; make new crops from the original photos, not by re-encoding existing files; blur house numbers and license plates)
 - `images/` — logo, dark logo, mascot, favicons, OG image
 - `404.html`, `robots.txt`, `sitemap.xml` — add any new page to `sitemap.xml`
 - `_redirects` — Netlify redirects (old `/cabinet-refinishing/` URLs go to the home page)
