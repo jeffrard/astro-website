@@ -9,6 +9,7 @@ Marketing site for Astro Painting Co. LLC, a residential painting company servin
 - `js/nav.js` — header Services dropdown and mobile menu
 - `js/gallery.js` — photo sliders on the home page Interior and Exterior Painting cards (photos in `images/interior/` and `images/exterior/` as WebP, 16:10 crops at 600 and 1200px wide; make new crops from the original photos, not by re-encoding existing files; blur house numbers and license plates)
 - `images/` — logo, dark logo, mascot, favicons, OG image
+- Favicons: `/favicon.ico` (16/32/48) plus `images/favicon-48/96/192.png`, all made from `images/mascot.png`. Google Search only shows square icons sized in multiples of 48px, so keep that when replacing them. The `WebSite` JSON-LD in `index.html` sets the site name Google shows ("Astro Painting Co.").
 - `404.html`, `robots.txt`, `sitemap.xml` — add any new page to `sitemap.xml`
 - `_redirects` — Netlify redirects (old `/cabinet-refinishing/` URLs go to the home page)
 - `netlify/functions/submission-created.mjs` — sends each quote request to Go High Level (see Quote form)
