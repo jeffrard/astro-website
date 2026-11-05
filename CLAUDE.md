@@ -12,7 +12,7 @@ Marketing site for Astro Painting Co. LLC, a residential painting company servin
 - Favicons: `/favicon.ico` (16/32/48) plus `images/favicon-48/96/192.png`, all made from `images/mascot.png`. Google Search only shows square icons sized in multiples of 48px, so keep that when replacing them. The `WebSite` JSON-LD in `index.html` sets the site name Google shows ("Astro Painting Co.").
 - `404.html`, `robots.txt`, `sitemap.xml` — add any new page to `sitemap.xml`
 - `_redirects` — Netlify redirects (old `/cabinet-refinishing/` URLs go to the home page)
-- `netlify/functions/submission-created.mjs` — sends each quote request to Go High Level (see Quote form)
+- `netlify/functions/submission-created.mjs` — sends each quote request to Go High Level and posts an alert to Slack (see Quote form)
 
 ## Hosting and publishing
 - Hosted on Netlify; canonical URL is https://www.astropainting.co/
@@ -43,7 +43,9 @@ Marketing site for Astro Painting Co. LLC, a residential painting company servin
 - Keep the hidden `form-name` input and the `company` honeypot field when editing.
 - Submitted via `fetch` in an inline script on `index.html`.
 - Every verified submission also goes to Go High Level (the CRM) via `netlify/functions/submission-created.mjs`, which upserts a contact (tags: `website lead` + the service) and adds the project details as a note. It uses GHL's API directly, not a GHL premium trigger, so there's no per-lead charge.
-- That function needs Netlify environment variables `GHL_API_TOKEN` (a GHL Private Integration token with contact scopes) and `GHL_LOCATION_ID`. Never commit the token. If you rename or add form fields, update the function too.
+- The same function also posts a new-lead alert to Slack #new-leads through an incoming webhook (the "Website leads" Slack app). Netlify's own form notifications only offer email and a raw HTTP POST that Slack can't read, which is why this lives in the function.
+- The GHL and Slack steps run independently, so one failing never blocks the other; failures show in Netlify's function logs.
+- Netlify environment variables it needs: `GHL_API_TOKEN` (a GHL Private Integration token with contact scopes), `GHL_LOCATION_ID`, and `SLACK_WEBHOOK_URL`. Never commit the token or the webhook URL. If you rename or add form fields, update the function too.
 
 ## Working with Jared
 - Answer "can you / is it possible" questions without acting on them; wait to be asked before making changes.
