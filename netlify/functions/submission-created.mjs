@@ -1,6 +1,8 @@
 // Runs automatically after every verified (non-spam) Netlify form submission.
-// Sends quote requests to Go High Level as a contact, with the project details as a note.
-// Needs two environment variables in Netlify: GHL_API_TOKEN (Private Integration token) and GHL_LOCATION_ID.
+// For quote requests it does two independent things, so one failing never blocks the other:
+//   1. Go High Level: upserts the contact and adds the project details as a note.
+//      Needs GHL_API_TOKEN (Private Integration token) and GHL_LOCATION_ID.
+//   2. Slack: posts a new-lead alert to the channel behind SLACK_WEBHOOK_URL (an incoming webhook).
 
 const GHL = 'https://services.leadconnectorhq.com';
 const HEADERS = (token) => ({
@@ -18,18 +20,14 @@ function toE164(raw) {
   return (raw || '').trim();
 }
 
-export default async (req) => {
-  const { payload } = await req.json();
-  if (payload.form_name !== 'quote') return new Response('Not a quote form', { status: 200 });
-
+async function sendToGhl(d) {
   const token = process.env.GHL_API_TOKEN;
   const locationId = process.env.GHL_LOCATION_ID;
   if (!token || !locationId) {
     console.error('GHL_API_TOKEN or GHL_LOCATION_ID is not set; lead was not sent to GHL.');
-    return new Response('Missing GHL settings', { status: 200 });
+    return;
   }
 
-  const d = payload.data || {};
   const name = (d.name || '').trim();
   const [firstName, ...rest] = name.split(/\s+/);
   const service = (d.service || '').trim();
@@ -49,7 +47,7 @@ export default async (req) => {
   const res = await fetch(`${GHL}/contacts/upsert`, { method: 'POST', headers: HEADERS(token), body: JSON.stringify(contact) });
   if (!res.ok) {
     console.error(`GHL contact upsert failed (${res.status}): ${await res.text()}`);
-    return new Response('GHL contact failed', { status: 200 });
+    return;
   }
   const contactId = (await res.json()).contact?.id;
 
@@ -66,5 +64,56 @@ export default async (req) => {
   }
 
   console.log(`Sent quote request to GHL as contact ${contactId}`);
+}
+
+// Slack mrkdwn treats &, < and > as control characters; escape anything the visitor typed.
+const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+async function sendToSlack(d) {
+  const url = process.env.SLACK_WEBHOOK_URL;
+  if (!url) {
+    console.error('SLACK_WEBHOOK_URL is not set; no Slack alert was sent.');
+    return;
+  }
+
+  const name = (d.name || '').trim() || 'Someone';
+  const service = (d.service || '').trim() || 'Not sure yet';
+  const email = (d.email || '').trim();
+  const phone = (d.phone || '').trim();
+  const tel = toE164(phone);
+  const message = (d.message || '').trim();
+
+  const contactLine = [
+    phone ? (tel.startsWith('+') ? `<tel:${tel}|${esc(phone)}>` : esc(phone)) : 'No phone given',
+    email ? `<mailto:${esc(email)}|${esc(email)}>` : 'No email given',
+  ].join('  ·  ');
+  const quoted = message ? esc(message).split('\n').map((l) => `>${l}`).join('\n') : '_No project details_';
+
+  const body = {
+    text: `New website lead: ${name} (${service})`, // notification preview
+    blocks: [
+      { type: 'header', text: { type: 'plain_text', text: `New website lead: ${service}`.slice(0, 150) } },
+      { type: 'section', text: { type: 'mrkdwn', text: `*${esc(name)}*\n${contactLine}` } },
+      { type: 'section', text: { type: 'mrkdwn', text: quoted.slice(0, 2900) } },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: 'From the astropainting.co quote form · also added to Go High Level' }] },
+    ],
+  };
+
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!res.ok) {
+    console.error(`Slack alert failed (${res.status}): ${await res.text()}`);
+    return;
+  }
+  console.log('Posted new-lead alert to Slack');
+}
+
+export default async (req) => {
+  const { payload } = await req.json();
+  if (payload.form_name !== 'quote') return new Response('Not a quote form', { status: 200 });
+
+  const d = payload.data || {};
+  const results = await Promise.allSettled([sendToGhl(d), sendToSlack(d)]);
+  for (const r of results) if (r.status === 'rejected') console.error('Lead step crashed:', r.reason);
+
   return new Response('OK', { status: 200 });
 };
